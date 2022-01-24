@@ -4,6 +4,12 @@
 
 # Data: 
 - PPMI database, https://www.ppmi-info.org/
+- List of data files used
+-- PPMI_Baseline_Data_02Jul2018
+-- MDS_UPDRS_Part_I__Patient_Questionnaire
+-- MDS_UPDRS_Part_III
+-- PPMI_Year_1-3_Data_02Jul2018
+
 # Prerequisits:
 - Matlab R2021a: https://www.mathworks.com/
 - MES toolbox v1.5: Harald Hentschke (2022). hhentschke/measures-of-effect-size-toolbox (https://github.com/hhentschke/measures-of-effect-size-toolbox), GitHub. 
