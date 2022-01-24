@@ -1,6 +1,6 @@
 # PDSubtyping
 - PDSubtyping.m offers a standardized procedure for k-means clustering for PD subtyping and characterizing related attributes.
-- It contains complete data analysis codes for the study "Characterization of Parkinson’s Disease Subtypes and Related Attributes" by Shamatree Shakya, MGS, RN, BSN, Julia Prevett, Xiao Hu, PhD, Ran Xiao, PhD
+- It contains complete data analysis codes for the study "Characterization of Parkinson’s Disease Subtypes and Related Attributes" (2022) by Shamatree Shakya, MGS, RN, BSN, Julia Prevett, Xiao Hu, PhD, Ran Xiao, PhD
 
 # Data: 
 - PPMI database, https://www.ppmi-info.org/
