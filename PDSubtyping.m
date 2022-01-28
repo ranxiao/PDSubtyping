@@ -101,18 +101,20 @@ dataProgression = Data_joint_hy(:,[1 2 5 6 7 3 8 9 10 4 11 12 13]);
 
 % save to results folder
 save('./results/dataProgression', 'dataProgression');
-%% Part III: a standardize procedure for automatic cluster analysis using the baseline data
+%% Part III: a standardized and automatic procedure for cluster analysis using the baseline data
 rng('default');  % set random seed for reproducibility
 % load baseline data matrix
 load('./results/dataBaseline.mat');
-% step 1. data rescaling to 0 ~ 1 with min-max normalization
-dataBaseline_rs = normalize(table2array(dataBaseline),'range'); 
+% step 1. data rescaling to 0 ~ 1 with min-max normalization, 22 variables
+% are selected for rescaling. Gender is exclused from cluster analysis, so
+% it's removed from the rescaling process.
+[dataBaseline_rs,C,S] = normalize(table2array(dataBaseline(:,2:end)),'range'); 
 % Step 2. use Calinski-Harabasz (C-H) psuedo F as a criteria to dermine the
 % optimal number of clusters in the range of 2 to 10 clusters
     % Note: The Calinski-Harabasz index also known as the Variance Ratio Criterion, 
     % is the ratio of the sum of between-clusters dispersion and of inter-cluster dispersion for all clusters,
     % the higher the score , the better the performances.
-eva = evalclusters(dataBaseline_rs(:,2:end),'kmeans','CalinskiHarabasz','KList',[2:10]); 
+eva = evalclusters(dataBaseline_rs,'kmeans','CalinskiHarabasz','KList',[2:10]); 
 % find optimal cluster number K
 K = eva.OptimalK;
 % Plot the curve of C-H value against cluster number
@@ -122,14 +124,17 @@ figure; plot(eva); xlim([1 11]); pbaspect([2 1 1]); xlabel('Cluster number'); yl
 % with 100 times of random initialization, and 100 iterations of cluster analysis
     % Note: The cluster analysis was repeated 100 times with random initialization to avoid final cluster membership derived from a local optimum. 
     % The maximal number of iterations was set at 100 to ensure ample iterations to arrive at an optimal clustering solution within each cluster analysis. 
-[idx,cent,sumdist] = kmeans(dataBaseline_rs(:,2:end),K,'Distance','sqeuclidean', 'MaxIter',100,'Display','final','Replicates',100);                     
+[idx,cent,sumdist] = kmeans(dataBaseline_rs,K,'Distance','sqeuclidean', 'MaxIter',100,'Display','final','Replicates',100);                     
 
-% save clustering results, 
+% save clustering results.
+% The file contains cluster membership assignments. It also contains parameters needed as a decision rule 
 % "idx" contains cluster memberships, 1.mild motor-non-motor subtype (MMNS)
 %                                     2.severe motor-non-motor subtype (SMNS). 
-% "cent" contains centroids for all 22 variables used in cluster analsysi
+% "cent" contains centroids for all 22 variables used in cluster analsys
 % "sumdist" contains the sum of distance between samples and the centroid for each cluster
-save('./results/clusteringResults','idx','cent','sumdist');
+% "C" and "S" are the center and scaling factors for data rescaling based on
+%             min-max normalization. The equation is data_rescaled = (data-C)/S
+save('./results/clusteringResults','idx','cent','sumdist','C', 'S');
 %% Part IV: Characterizing baseline variables based on PD subtype assignment
 % add effect size toolbox to path, for calculating standardized mean difference (SMD)
 addpath(genpath('./EffectSizeToolbox_v1.5'));
